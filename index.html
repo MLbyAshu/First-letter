@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Small Letter 💌</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+background:#ffe4ec;
+font-family:'Poppins';
+overflow:hidden;
+}
+
+/* Screens */
+.screen{
+position:absolute;
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+transition:0.8s ease;
+}
+
+.hidden{
+opacity:0;
+pointer-events:none;
+}
+
+/* Start */
+#start{
+font-family:'Great Vibes';
+font-size:42px;
+color:#d63384;
+cursor:pointer;
+text-align:center;
+}
+
+/* Envelope */
+.envelope{
+width:260px;
+height:160px;
+background:#ffb6c1;
+border:3px solid #ff4d88;
+position:relative;
+cursor:pointer;
+border-radius:6px;
+}
+
+.flap{
+position:absolute;
+width:100%;
+height:100%;
+background:#ff99aa;
+clip-path:polygon(0 0,50% 60%,100% 0);
+transform-origin:top;
+transition:0.6s;
+}
+
+.open .flap{
+transform:rotateX(180deg);
+}
+
+/* Letter */
+.letter{
+position:absolute;
+width:80%;
+max-width:500px;
+background:#fff0f5;
+border-radius:12px;
+padding:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+font-family:'Great Vibes';
+font-size:22px;
+line-height:1.6;
+top:100%;
+opacity:0;
+transition:0.8s;
+overflow-y:auto;
+max-height:65vh;
+}
+
+.show-letter{
+top:20%;
+opacity:1;
+}
+
+/* Glow words */
+.glow{
+color:#ff4d88;
+text-shadow:0 0 8px #ff85a2;
+}
+
+/* Next button */
+.next{
+margin-top:20px;
+font-size:28px;
+color:#ff4d88;
+cursor:pointer;
+animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+}
+
+/* Buttons */
+button{
+padding:12px 25px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+margin:10px;
+font-size:16px;
+}
+
+#yes{background:#ff4d88;color:white;}
+#no{background:#ccc;position:fixed;}
+
+/* Success */
+#success{
+font-family:'Great Vibes';
+font-size:34px;
+color:#d63384;
+text-align:center;
+animation:fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+/* Floating hearts */
+.heart{
+position:absolute;
+color:#ff4d88;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);opacity:0;}
+50%{opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Screen 1 -->
+<div class="screen" id="s1">
+<div id="start">Letter for you 💌<br><small>Tap to begin</small></div>
+</div>
+
+<!-- Screen 2 -->
+<div class="screen hidden" id="s2">
+
+<div class="envelope" id="envelope">
+<div class="flap"></div>
+</div>
+
+<div class="letter" id="letter">
+
+Hey Asmi,
+
+I wish i could make you see how beautifull u are -- I know that you don't see it, and you probably won't believe me anyway, but I spoke to the sunrise this morning and it told me it was jealous of your <span class="glow">smile</span>, the way it can brighten even the places that haven't seen the sun in a while. I know that you don't see it,but I've heard whispers from the songbirds that they've been feeling insecure ever since they caught wind of your voice in their ears. And I know that you don't see it,but the sea's been awfully still ever since it saw you move. If the moon controls the tide, I'm certain you control the moon. if I could give you my eyes and ears, if you could listen to the rumors that I do, you'd hear the whole world catch its breath at the mere existence of you.
+
+<div class="next" id="next">❤️</div>
+
+</div>
+
+</div>
+
+<!-- Screen 3 -->
+<div class="screen hidden" id="s3">
+<div id="question">
+<h1 style="font-family:Great Vibes;">Can we be friends? 😊</h1>
+
+<div style="position:relative;">
+<button id="yes">Yes 💖</button>
+<button id="no">No</button>
+</div>
+</div>
+</div>
+
+<!-- Screen 4 -->
+<div class="screen hidden" id="s4">
+<div id="success"></div>
+</div>
+
+<script>
+
+// MUSIC
+const music = new Audio("https://www.bensound.com/bensound-music/bensound-love.mp3");
+music.loop = true;
+
+// Elements
+const s1=document.getElementById("s1");
+const s2=document.getElementById("s2");
+const s3=document.getElementById("s3");
+const s4=document.getElementById("s4");
+
+const start=document.getElementById("start");
+const envelope=document.getElementById("envelope");
+const letter=document.getElementById("letter");
+const next=document.getElementById("next");
+
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const success=document.getElementById("success");
+
+// Floating hearts
+for(let i=0;i<15;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(4+Math.random()*3)+"s";
+document.body.appendChild(h);
+}
+
+// Start
+start.onclick=()=>{
+music.play();
+s1.classList.add("hidden");
+s2.classList.remove("hidden");
+};
+
+// Envelope
+envelope.onclick=()=>{
+envelope.classList.add("open");
+letter.classList.add("show-letter");
+};
+
+// Next
+next.onclick=()=>{
+s2.classList.add("hidden");
+s3.classList.remove("hidden");
+document.getElementById("question").style.display="block";
+};
+
+// YES (UPDATED MESSAGE + BETTER EMOJI)
+yes.onclick=()=>{
+s3.classList.add("hidden");
+s4.classList.remove("hidden");
+
+success.innerHTML = `
+<div style="font-family:Great Vibes; font-size:34px; color:#d63384;">
+I knew you would accept 😊<br><br>
+Mujhe pata tha tum maan jaogi 🙂
+</div>
+
+<br>
+
+<img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" width="180">
+`;
+};
+
+// NO movement (mobile + desktop)
+function moveNo(){
+const maxX = window.innerWidth - no.offsetWidth;
+const maxY = window.innerHeight - no.offsetHeight;
+
+no.style.left = Math.random()*maxX + "px";
+no.style.top = Math.random()*maxY + "px";
+}
+
+no.onmouseover = moveNo;
+no.onclick = (e)=>{
+e.preventDefault();
+moveNo();
+};
+
+</script>
+
+</body>
+</html>
